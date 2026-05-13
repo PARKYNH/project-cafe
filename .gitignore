@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# env
+.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터 설정
+.vscode/
+.idea/
+
+# 테스트 커버리지
+coverage/
+
+# 빌드 결과물
+dist/
+build/
