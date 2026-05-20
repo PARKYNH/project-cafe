@@ -13,7 +13,10 @@ const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 
 // CORS 허용 (프론트엔드/모바일 등 다양한 클라이언트에서 접근 가능)
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 // JSON Body 파싱
 app.use(express.json({ limit: "1mb" }));
