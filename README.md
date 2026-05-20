@@ -1,27 +1,53 @@
 # ☕ BREWY (브루이 카페 픽업 주문)
 
-> 개발 컨설턴트 포트폴리오를 위한 Node.js 백엔드 프로젝트  
+> 개발 컨설턴트 포트폴리오를 위한 Node.js 백엔드 + React 프론트엔드 프로젝트
 > AI 바이브코딩 실습을 병행하며 실무형 API 설계를 학습하는 저장소입니다.
 
 ---
 
-## 👨‍💻 프로젝트 개요
+## 📸 화면 미리보기
 
+### 🔐 로그인
+![로그인](./screenshots/login.png)
+
+### 🏠 메인 화면 (지점 + 메뉴)
+![메인](./screenshots/main.png)
+
+### 🤖 AI 메뉴 추천 챗봇
+![챗봇](./screenshots/chatbot.png)
+
+### 👤 마이페이지 (스탬프 + 쿠폰 + 주문내역)
+![마이페이지](./screenshots/mypage.png)
+
+---
+
+## 👨‍💻 프로젝트 개요
 - **프로젝트명**: BREWY (브루이 카페 픽업 주문)
 - **개발자**: 박용희
 - **개발 목적**
   - 개발 컨설턴트 포트폴리오
-  - Node.js 백엔드 학습
+  - Node.js 백엔드 + React 프론트엔드 학습
   - AI 바이브코딩 실습
 
 ---
 
 ## 🛠 기술 스택
 
-- **Backend**: Node.js v20 + Express
-- **Database**: MySQL 9.7
-- **Auth/Security**: JWT 인증 + bcrypt 암호화
-- **Etc**: dotenv, cors
+### Backend
+- Node.js v20 + Express
+- MySQL 9.7
+- JWT 인증 + bcrypt 암호화
+- dotenv, cors
+
+### Frontend
+- React.js
+- React Router DOM
+- Axios
+
+### AI/분석
+- Python 3.13
+- pandas, mysql-connector-python
+- OpenAI API (챗봇)
 
 ---
 
@@ -45,6 +71,7 @@
 ### ✅ Phase 4. 주문 API 완료
 - 주문 생성 (트랜잭션)
 - 주문 조회/취소
+- 동적 쿼리 필터링 (status/날짜)
 
 ### ✅ Phase 5. Python 데이터 분석 완료
 - Python 3.13 환경 구축
@@ -53,33 +80,32 @@
 - BREWY DB 통계 분석
   - 전체 주문 수
   - 지점별 매출
-  - 인 메뉴 TOP 5
+  - 인기 메뉴 TOP 5
   - 카테고리별 매출
   - 일별 주문 현황
- 
+
 ### ✅ Phase 6. 스탬프/쿠폰 시스템 완료
-- stamps 테이블 설계/생성
-- coupons 테이블 설계/생성
-- 스탬프 적립 API
-- 스탬프 개수 조회 API
-- 쿠폰 목록 조회 API
-- 쿠폰 사용 API
+- stamps/coupons 테이블 설계/생성
+- 스탬프 적립/조회 API
+- 쿠폰 목록/사용 API
 - 주문 완료 시 자동 스탬프 적립
 - 스탬프 10개 달성 시 쿠폰 자동 발급
 
-### 🔜 Phase 7. AI 연동 (진행중)
+### ✅ Phase 7. React 프론트엔드 완료
+- 로그인 화면
+- 메인 화면 (지점/메뉴 목록)
+- 마이페이지 (스탬프/쿠폰/주문내역)
+- AI 메뉴 추천 챗봇 (우측 하단 버튼)
+
+### 🔜 Phase 8. AI 연동 (진행중)
 - OpenAI API 연동
-- 메뉴 추천 챗봇
+- 메뉴 추천 챗봇 (실제 AI 응답)
 - FastAPI 서버 구축
 
-### 🔜 Phase 8. 매출 통계 API (예정)
+### 🔜 Phase 9. 매출 통계 API (예정)
 - 일별/월별 매출 통계
 - 지점별 매출 비교
 - 관리자 전용 API
-
-### 🔜 Phase 9. 프론트엔드 (예정)
-- React 화면 구현
-- 백엔드 연동
 
 ### 🔜 Phase 10. AWS 배포 (예정)
 - EC2 서버 배포
@@ -90,14 +116,43 @@
 
 ## 📡 API 목록
 
+### 인증
 | Method | Endpoint | 설명 |
-|---|---|---|
-| `POST` | `/api/auth/register` | 회원가입 |
-| `POST` | `/api/auth/login` | 로그인 JWT 발급 |
-| `GET` | `/api/users/me` | 내정보 조회 (인증 필요) |
-| `GET` | `/api/branches` | 지점 목록 |
-| `GET` | `/api/products` | 메뉴 목록 |
-| `GET` | `/api/products/:id` | 메뉴 상세 |
+|--------|----------|------|
+| POST | /api/auth/register | 회원가입 |
+| POST | /api/auth/login | 로그인 JWT 발급 |
+
+### 회원
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| GET | /api/users/me | 내정보 조회 | ✅ |
+
+### 지점/메뉴
+| Method | Endpoint | 설명 |
+|--------|----------|------|
+| GET | /api/branches | 지점 목록 |
+| GET | /api/products | 메뉴 목록 |
+| GET | /api/products/:id | 메뉴 상세 |
+
+### 주문
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| POST | /api/orders | 주문 생성 | ✅ |
+| GET | /api/orders | 주문 목록 (필터) | ✅ |
+| GET | /api/orders/:id | 주문 상세 | ✅ |
+| PATCH | /api/orders/:id/cancel | 주문 취소 | ✅ |
+
+### 스탬프
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| GET | /api/stamps | 스탬프 목록 | ✅ |
+| GET | /api/stamps/count | 스탬프 개수 | ✅ |
+
+### 쿠폰
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| GET | /api/coupons | 쿠폰 목록 | ✅ |
+| POST | /api/coupons/use | 쿠폰 사용 | ✅ |
 
 ---
 
@@ -114,40 +169,42 @@ brewy-backend/
 │   ├── branches.js
 │   ├── products.js
 │   ├── orders.js
-│   ├── stamps.js      ← 신규!
-│   └── coupons.js     ← 신규!
+│   ├── stamps.js
+│   └── coupons.js
 ├── controllers/
 │   ├── authController.js
 │   ├── userController.js
 │   ├── branchController.js
 │   ├── productController.js
 │   ├── orderController.js
-│   ├── stampController.js  ← 신규!
-│   └── couponController.js ← 신규!
+│   ├── stampController.js
+│   └── couponController.js
 ├── models/
 │   ├── User.js
 │   ├── Branch.js
 │   ├── Product.js
 │   ├── Order.js
-│   ├── Stamp.js       ← 신규!
-│   └── Coupon.js      ← 신규!
+│   ├── Stamp.js
+│   └── Coupon.js
 ├── middlewares/
 │   ├── auth.js
 │   └── errorHandler.js
-└── python/
-    ├── db/
-    │   └── connection.py
-    ├── analysis/
-    │   └── brewy_stats.py
-    └── chatbot/
-        └── menu_recommend.py
+├── python/
+│   ├── db/connection.py
+│   ├── analysis/brewy_stats.py
+│   └── chatbot/menu_recommend.py
+└── screenshots/
+    ├── login.png
+    ├── main.png
+    ├── chatbot.png
+    └── mypage.png
 ```
 
 ---
 
 ## ⚙️ 실행 방법 (설치/환경변수/서버 실행)
 
-### 1) 📦 설치
+### 1) 📦 패키지 설치
 
 ```bash
 npm install
@@ -280,7 +337,6 @@ CREATE TABLE coupons (
   FOREIGN KEY (user_id)
     REFERENCES users(user_id)
 );
-//AI Generate:parkynh2|20260518|25|6e56eb623db14d4db8ff7cafad831378
 ```
 
 ### 4) 🚀 서버 실행
@@ -297,10 +353,24 @@ npm run dev
 npm start
 ```
 
+직접 실행:
+```bash
+node app.js
+```
+
 기본 주소:
 
 - API 서버: `http://localhost:8080`
 - 헬스체크: `GET http://localhost:8080/health`
+
+### 5) 💻 프론트엔드 실행
+```bash
+cd ../brewy-frontend
+npm install
+npm start
+```
+프론트 주소: http://localhost:3000
+백엔드 서버(8080)가 먼저 실행되어야 합니다!
 
 ---
 
@@ -352,6 +422,38 @@ npm start
 
 - URL 예시: `http://localhost:8080/api/products/1`
 
+### 7) 주문 생성 - `POST /api/orders` (인증 필요)
+- URL: `http://localhost:8080/api/orders`
+- Headers:
+  - `Authorization: Bearer <accessToken>`
+- Body (JSON):
+```json
+{
+  "branchId": 1,
+  "pickupTime": "2026-05-20 10:00:00",
+  "items": [
+    { "productId": 1, "quantity": 2 },
+    { "productId": 2, "quantity": 1 }
+  ]
+}
+```
+
+### 8) 스탬프 개수 조회 - `GET /api/stamps/count` (인증 필요)
+- URL: `http://localhost:8080/api/stamps/count`
+- Headers:
+  - `Authorization: Bearer <accessToken>`
+
+### 9) 쿠폰 사용 - `POST /api/coupons/use` (인증 필요)
+- URL: `http://localhost:8080/api/coupons/use`
+- Headers:
+  - `Authorization: Bearer <accessToken>`
+- Body (JSON):
+```json
+{
+  "couponCode": "CPN-xxxxx"
+}
+```
+
 ### ✅ Postman 체크 포인트
 
 - Body 타입은 반드시 `raw` + `JSON`으로 설정
@@ -383,47 +485,6 @@ npm start
 
 ---
 
-### 📡 API 목록
-
-### 인증
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| POST | /api/auth/register | 회원가입 |
-| POST | /api/auth/login | 로그인 JWT 발급 |
-
-### 회원
-| Method | Endpoint | 설명 | 인증 |
-|--------|----------|------|------|
-| GET | /api/users/me | 내정보 조회 | ✅ |
-
-### 지점/메뉴
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | /api/branches | 지점 목록 |
-| GET | /api/products | 메뉴 목록 |
-| GET | /api/products/:id | 메뉴 상세 |
-
-### 주문
-| Method | Endpoint | 설명 | 인증 |
-|--------|----------|------|------|
-| POST | /api/orders | 주문 생성 | ✅ |
-| GET | /api/orders | 주문 목록 (필터) | ✅ |
-| GET | /api/orders/:id | 주문 상세 | ✅ |
-| PATCH | /api/orders/:id/cancel | 주문 취소 | ✅ |
-
-### 스탬프
-| Method | Endpoint | 설명 | 인증 |
-|--------|----------|------|------|
-| GET | /api/stamps | 스탬프 목록 | ✅ |
-| GET | /api/stamps/count | 스탬프 개수 | ✅ |
-
-### 쿠폰
-| Method | Endpoint | 설명 | 인증 |
-|--------|----------|------|------|
-| GET | /api/coupons | 쿠폰 목록 | ✅ |
-| POST | /api/coupons/use | 쿠폰 사용 | ✅ |
-
-
 ## 📚 학습 포인트
 
 - RESTful API 설계 원칙
@@ -440,10 +501,16 @@ npm start
 - OpenAI API 연동 (챗봇)
 - 스탬프/쿠폰 비즈니스 로직 구현
 - AI 바이브코딩 활용법 (Cursor AI)
+- React 프론트엔드 개발
+- React 컴포넌트 설계       
+- React Router DOM 페이지 라우팅  
+- localStorage JWT 토큰 관리
+- Axios 인터셉터 활용          
+- CORS 설정 (프론트-백엔드 연동) 
 
 ---
 
 ## ✨ 한 줄 소개
 
-**BREWY는 백엔드 기본기 + 실무 관점 + AI 협업 개발 방식을 함께 쌓아가는 카페 주문 API 프로젝트입니다.**
+**BREWY는 Node.js 백엔드 + React 프론트엔드 + Python AI 분석까지 갖춘 카페 픽업 주문 풀스택 포트폴리오 프로젝트입니다.**
 
