@@ -1,5 +1,7 @@
 const pool = require("../config/db");
 const Order = require("../models/Order");
+const Stamp  = require('../models/Stamp');
+const Coupon = require('../models/Coupon');
 
 const MYSQL_DUP_ENTRY = "ER_DUP_ENTRY";
 
@@ -149,6 +151,16 @@ exports.create = async (req, res, next) => {
         quantity: line.quantity,
         unitPrice: line.unitPrice,
       });
+    }
+
+    // 스탬프 적립!
+    await Stamp.create(conn, userId, orderId);
+
+    // 스탬프 10개 체크 → 쿠폰 발급
+    const stampCount = await Stamp
+      .countByUserId(userId);
+    if (stampCount % 10 === 0) {
+      await Coupon.create(conn, userId);
     }
 
     await conn.commit();

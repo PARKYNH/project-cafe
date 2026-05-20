@@ -29,6 +29,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/branches", branchRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use('/api/stamps', require('./routes/stamps'));
+app.use('/api/coupons', require('./routes/coupons'));
 
 // 존재하지 않는 엔드포인트 처리 (응답 형식 통일)
 app.use((req, res) => {
