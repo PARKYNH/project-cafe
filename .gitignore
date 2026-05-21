@@ -31,3 +31,6 @@ python/.env
 python/__pycache__/ 
 *.pyc 
 *.pyo 
+
+# 프론트엔드 패키지
+frontend/node_modules/
