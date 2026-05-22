@@ -17,7 +17,8 @@ module.exports = function auth(req, res, next) {
     // 토큰에 담긴 사용자 식별 정보를 request에 붙여서 이후 로직에서 사용합니다.
     req.user = {
       user_id: payload.user_id,
-      email: payload.email,
+      email  : payload.email,
+      role   : payload.role  // ← 추가!
     };
 
     return next();

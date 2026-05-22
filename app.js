@@ -34,6 +34,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use('/api/stamps', require('./routes/stamps'));
 app.use('/api/coupons', require('./routes/coupons'));
+// 기존 라우터 아래에 추가!
+app.use('/api/admin', require('./routes/admin'));
+
 
 // 존재하지 않는 엔드포인트 처리 (응답 형식 통일)
 app.use((req, res) => {

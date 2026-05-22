@@ -4,10 +4,12 @@ const User = require("../models/User");
 
 const SALT_ROUNDS = 10;
 
-function signAccessToken({ user_id, email }) {
-  return jwt.sign({ user_id, email }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES || "1h",
-  });
+function signAccessToken({ user_id, email, role }) {
+  return jwt.sign(
+    { user_id, email, role },  // ← role 추가!
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES || "1h" }
+  );
 }
 
 // POST /api/auth/register
@@ -94,7 +96,8 @@ exports.login = async (req, res, next) => {
 
     const accessToken = signAccessToken({
       user_id: user.user_id,
-      email: user.email,
+      email  : user.email,
+      role   : user.role,  // ← role 추가!
     });
 
     return res.json({

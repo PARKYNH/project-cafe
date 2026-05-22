@@ -4,14 +4,13 @@
 
 module.exports = function errorHandler(err, req, res, next) {
   // eslint-disable-line no-unused-vars
+  console.error('🚨 에러:', err.message); // ← 추가!
   const status = Number(err?.status || 500);
   const message =
     err?.message ||
     (status === 500 ? "서버 오류가 발생했습니다." : "요청 처리에 실패했습니다.");
-
   return res.status(status).json({
     success: false,
     message,
   });
 };
-
