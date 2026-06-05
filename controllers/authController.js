@@ -101,8 +101,10 @@ exports.login = async (req, res, next) => {
     });
 
     return res.json({
-      success: true,
+      success     : true,
       accessToken,
+      role        : user.role,
+      name        : user.name,
     });
   } catch (err) {
     return next(err);

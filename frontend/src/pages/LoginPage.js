@@ -20,14 +20,17 @@ function LoginPage() {
         { email, password }
       );
 
-      // 토큰 저장!
-      localStorage.setItem(
-        'token',
-        res.data.accessToken
-      );
+      // 토큰 + 사용자 정보 저장!
+      localStorage.setItem('token', res.data.accessToken);
+      localStorage.setItem('role', res.data.role);
+      localStorage.setItem('name', res.data.name);
 
-      // 메인 페이지로 이동!
-      navigate('/main');
+      // admin이면 관리자 대시보드로!
+      if (res.data.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/main');
+      }
 
     } catch (err) {
       setError(

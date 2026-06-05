@@ -19,7 +19,13 @@ app.use(cors({
 }));
 
 // JSON Body 파싱
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "10mb" }));
+
+// 📌 정적 파일 서빙 — 업로드된 이미지를 URL로 접근 가능하게!
+//    http://localhost:8080/uploads/product-1-xxx.jpg 형태로 접근
+//    Java의 ResourceHandler / nginx static 설정과 동일한 역할
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 간단한 헬스체크
 app.get("/health", (req, res) => {

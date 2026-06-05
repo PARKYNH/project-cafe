@@ -8,6 +8,7 @@ import {
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import MyPage from './pages/MyPage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -33,7 +34,11 @@ function App() {
         />
         <Route
           path="/mypage"
-          element={<MyPage />} 
+          element={<MyPage />}
+        />
+        <Route
+          path="/admin"
+          element={<AdminPage />}
         />
       </Routes>
     </BrowserRouter>

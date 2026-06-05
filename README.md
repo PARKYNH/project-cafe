@@ -10,7 +10,7 @@
 ### 🔐 로그인
 ![로그인](./screenshots/login.png)
 
-### 🏠 메인 화면 (지점 + 메뉴)
+### 🏠 메인 화면 (지점 + 메뉴 이미지 카드)
 ![메인](./screenshots/main.png)
 
 ### 🤖 AI 메뉴 추천 챗봇
@@ -38,6 +38,7 @@
 - MySQL 9.7
 - JWT 인증 + bcrypt 암호화
 - dotenv, cors
+- multer (이미지 업로드)
 
 ### Frontend
 - React.js
@@ -97,17 +98,36 @@
 - 마이페이지 (스탬프/쿠폰/주문내역)
 - AI 메뉴 추천 챗봇 (우측 하단 버튼)
 
-### 🔜 Phase 8. AI 연동 (진행중)
-- OpenAI API 연동
-- 메뉴 추천 챗봇 (실제 AI 응답)
-- FastAPI 서버 구축
-
-### 🔜 Phase 9. 매출 통계 API (예정)
+### ✅ Phase 8. 매출 통계 API 완료
 - 일별/월별 매출 통계
 - 지점별 매출 비교
-- 관리자 전용 API
+- 관리자 전용 API (adminOnly 미들웨어)
+- users 테이블 role 컬럼 추가
 
-### 🔜 Phase 10. AWS 배포 (예정)
+### ✅ Phase 10. 관리자 API 완료
+- 메뉴 등록 / 수정 / 비활성화(soft delete)
+- 전체 주문 목록 조회
+- 주문 상태 변경 (pending→paid→making→ready→done)
+
+### ✅ Phase 11. 관리자 대시보드 React UI 완료
+- 관리자/일반유저 role 기반 라우팅 분리
+  - admin → `/admin` 자동 이동
+  - user → `/main` 자동 이동
+- 3탭 구성: 메뉴 관리 / 주문 관리 / 매출 통계
+- 메뉴 등록·수정·삭제 UI
+- 주문 상태 드롭다운 변경 UI
+- 일별·월별·지점별·메뉴별 통계 테이블
+
+### ✅ Phase 12. 메뉴 이미지 업로드 완료
+- multer 미들웨어로 서버 디스크 저장
+- `POST /api/admin/products/:id/image` 엔드포인트
+- 기존 이미지 자동 삭제 (디스크 낭비 방지)
+- 관리자 페이지: 썸네일 + 📷변경 버튼
+- 메인 페이지: 메뉴 카드 이미지 표시
+
+### 🔜 Phase 13. 카카오 소셜 로그인 (예정)
+
+### 🔜 Phase 14. AWS EC2 배포 (예정)
 - EC2 서버 배포
 - 도메인 연결
 - 실제 서비스 오픈
@@ -154,15 +174,40 @@
 | GET | /api/coupons | 쿠폰 목록 | ✅ |
 | POST | /api/coupons/use | 쿠폰 사용 | ✅ |
 
+### 관리자 (admin 전용 🔒)
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| GET | /api/admin/stats/daily | 일별 매출 통계 | ✅ admin |
+| GET | /api/admin/stats/monthly | 월별 매출 통계 | ✅ admin |
+| GET | /api/admin/stats/branch | 지점별 매출 통계 | ✅ admin |
+| GET | /api/admin/stats/menu | 메뉴별 매출 통계 | ✅ admin |
+| GET | /api/admin/products | 메뉴 전체 목록 | ✅ admin |
+| POST | /api/admin/products | 메뉴 등록 | ✅ admin |
+| PUT | /api/admin/products/:id | 메뉴 수정 | ✅ admin |
+| DELETE | /api/admin/products/:id | 메뉴 비활성화 | ✅ admin |
+| POST | /api/admin/products/:id/image | 메뉴 이미지 업로드 | ✅ admin |
+| GET | /api/admin/orders | 전체 주문 목록 | ✅ admin |
+| PATCH | /api/admin/orders/:id/status | 주문 상태 변경 | ✅ admin |
+
+---
+
+## 👤 테스트 계정
+
+| 역할 | 이메일 | 비밀번호 | 이동 경로 |
+|------|--------|---------|----------|
+| 관리자 | test@brewy.com | 12341234 | `/admin` |
+| 일반유저 | user1@brewy.com | 12341234 | `/main` |
+
 ---
 
 ## 📁 폴더 구조
 
 ```bash
-brewy-backend/
-├── app.js
+brewy-fullstack/
+├── app.js                      # 서버 시작점, 미들웨어/라우터 등록
+├── .env                        # 환경변수 (GitHub 미포함 - 직접 생성!)
 ├── config/
-│   └── db.js
+│   └── db.js                   # MySQL 커넥션 풀
 ├── routes/
 │   ├── auth.js
 │   ├── users.js
@@ -170,7 +215,8 @@ brewy-backend/
 │   ├── products.js
 │   ├── orders.js
 │   ├── stamps.js
-│   └── coupons.js
+│   ├── coupons.js
+│   └── admin.js                # 관리자 전용 라우터
 ├── controllers/
 │   ├── authController.js
 │   ├── userController.js
@@ -178,21 +224,36 @@ brewy-backend/
 │   ├── productController.js
 │   ├── orderController.js
 │   ├── stampController.js
-│   └── couponController.js
+│   ├── couponController.js
+│   └── adminController.js      # 관리자 API (통계/메뉴/주문 관리)
 ├── models/
 │   ├── User.js
 │   ├── Branch.js
 │   ├── Product.js
 │   ├── Order.js
 │   ├── Stamp.js
-│   └── Coupon.js
+│   ├── Coupon.js
+│   └── Stats.js                # 매출 통계 쿼리
 ├── middlewares/
-│   ├── auth.js
-│   └── errorHandler.js
+│   ├── auth.js                 # JWT 토큰 검증
+│   ├── errorHandler.js         # 전역 에러 처리
+│   └── upload.js               # multer 이미지 업로드 설정
+├── uploads/                    # 업로드된 이미지 저장 폴더
 ├── python/
 │   ├── db/connection.py
 │   ├── analysis/brewy_stats.py
 │   └── chatbot/menu_recommend.py
+├── frontend/
+│   └── src/
+│       ├── App.js              # 라우팅 설정
+│       ├── api/axios.js        # API 공통 설정 + 토큰 인터셉터
+│       ├── pages/
+│       │   ├── LoginPage.js    # 로그인 + role 기반 분기
+│       │   ├── MainPage.js     # 메뉴 이미지 카드 + 지점 목록
+│       │   ├── MyPage.js       # 스탬프/쿠폰/주문내역
+│       │   └── AdminPage.js    # 관리자 대시보드 (3탭)
+│       └── components/
+│           └── ChatBot.js      # AI 메뉴 추천 챗봇
 └── screenshots/
     ├── login.png
     ├── main.png
@@ -202,7 +263,7 @@ brewy-backend/
 
 ---
 
-## ⚙️ 실행 방법 (설치/환경변수/서버 실행)
+## ⚙️ 실행 방법
 
 ### 1) 📦 패키지 설치
 
@@ -210,7 +271,7 @@ brewy-backend/
 npm install
 ```
 
-> 권장 버전: **Node.js v20 이상**  
+> 권장 버전: **Node.js v20 이상**
 > (현재 프로젝트는 v22 환경에서도 동작 확인됨)
 
 ### 2) 🔐 환경변수 설정 (`.env`)
@@ -233,13 +294,7 @@ JWT_EXPIRES=1h
 
 ### 3) 🗄️ DB 준비
 
-- MySQL에서 `brewy` 데이터베이스 생성
-- `users`, `branches`, `categories`, `products`, `orders`, `order_items` 테이블 생성
-- 테스트용 샘플 데이터 입력
-
-### 3-1) 🧱 DB 스키마 SQL 블록
-
-아래 SQL을 순서대로 실행하면 기본 테이블이 생성됩니다.
+MySQL에서 `brewy` 데이터베이스 생성 후 아래 SQL 순서대로 실행:
 
 ```sql
 CREATE TABLE users (
@@ -249,6 +304,7 @@ CREATE TABLE users (
   name        VARCHAR(50) NOT NULL,
   phone       VARCHAR(20),
   social_type ENUM('none','kakao') DEFAULT 'none',
+  role        ENUM('user','admin') DEFAULT 'user',
   is_active   TINYINT DEFAULT 1,
   created_at  DATETIME DEFAULT NOW()
 );
@@ -280,8 +336,7 @@ CREATE TABLE products (
   is_sold_out TINYINT DEFAULT 0,
   is_active   TINYINT DEFAULT 1,
   created_at  DATETIME DEFAULT NOW(),
-  FOREIGN KEY (category_id)
-    REFERENCES categories(category_id)
+  FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
 CREATE TABLE orders (
@@ -291,15 +346,10 @@ CREATE TABLE orders (
   order_number VARCHAR(50) UNIQUE NOT NULL,
   total_price  INT NOT NULL,
   pickup_time  DATETIME NOT NULL,
-  status       ENUM(
-    'pending','paid','making',
-    'ready','done','cancelled'
-  ) DEFAULT 'pending',
+  status       ENUM('pending','paid','making','ready','done','cancelled') DEFAULT 'pending',
   created_at   DATETIME DEFAULT NOW(),
-  FOREIGN KEY (user_id)
-    REFERENCES users(user_id),
-  FOREIGN KEY (branch_id)
-    REFERENCES branches(branch_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (branch_id) REFERENCES branches(branch_id)
 );
 
 CREATE TABLE order_items (
@@ -308,10 +358,8 @@ CREATE TABLE order_items (
   product_id INT NOT NULL,
   quantity   INT NOT NULL DEFAULT 1,
   unit_price INT NOT NULL,
-  FOREIGN KEY (order_id)
-    REFERENCES orders(order_id),
-  FOREIGN KEY (product_id)
-    REFERENCES products(product_id)
+  FOREIGN KEY (order_id) REFERENCES orders(order_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE stamps (
@@ -319,57 +367,40 @@ CREATE TABLE stamps (
   user_id    INT NOT NULL,
   order_id   INT NOT NULL,
   created_at DATETIME DEFAULT NOW(),
-  FOREIGN KEY (user_id)
-    REFERENCES users(user_id),
-  FOREIGN KEY (order_id)
-    REFERENCES orders(order_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE TABLE coupons (
   coupon_id   INT PRIMARY KEY AUTO_INCREMENT,
   user_id     INT NOT NULL,
   coupon_code VARCHAR(50) UNIQUE NOT NULL,
-  status      ENUM('active','used','expired')
-              DEFAULT 'active',
+  status      ENUM('active','used','expired') DEFAULT 'active',
   created_at  DATETIME DEFAULT NOW(),
   expired_at  DATETIME NOT NULL,
   used_at     DATETIME,
-  FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 ```
 
 ### 4) 🚀 서버 실행
 
-개발 모드(자동 재시작):
-
-```bash
-npm run dev
-```
-
-일반 실행:
-
-```bash
-npm start
-```
-
-직접 실행:
 ```bash
 node app.js
 ```
-
-기본 주소:
 
 - API 서버: `http://localhost:8080`
 - 헬스체크: `GET http://localhost:8080/health`
 
 ### 5) 💻 프론트엔드 실행
+
 ```bash
-cd ../brewy-frontend
+cd frontend
 npm install
 npm start
 ```
-프론트 주소: http://localhost:3000
+
+프론트 주소: `http://localhost:3000`
 백엔드 서버(8080)가 먼저 실행되어야 합니다!
 
 ---
@@ -377,9 +408,6 @@ npm start
 ## 🧪 Postman 테스트 예시
 
 ### 1) 회원가입 - `POST /api/auth/register`
-
-- URL: `http://localhost:8080/api/auth/register`
-- Body (JSON):
 
 ```json
 {
@@ -392,9 +420,6 @@ npm start
 
 ### 2) 로그인 - `POST /api/auth/login`
 
-- URL: `http://localhost:8080/api/auth/login`
-- Body (JSON):
-
 ```json
 {
   "email": "test@brewy.com",
@@ -402,31 +427,10 @@ npm start
 }
 ```
 
-- 성공 시 응답의 `accessToken` 값을 복사합니다.
+성공 시 응답의 `accessToken` 값을 복사합니다.
 
-### 3) 내정보 조회 - `GET /api/users/me` (인증 필요)
+### 3) 주문 생성 - `POST /api/orders` (인증 필요)
 
-- URL: `http://localhost:8080/api/users/me`
-- Headers:
-  - `Authorization: Bearer <accessToken>`
-
-### 4) 지점 목록 조회 - `GET /api/branches`
-
-- URL: `http://localhost:8080/api/branches`
-
-### 5) 메뉴 목록 조회 - `GET /api/products`
-
-- URL: `http://localhost:8080/api/products`
-
-### 6) 메뉴 상세 조회 - `GET /api/products/:id`
-
-- URL 예시: `http://localhost:8080/api/products/1`
-
-### 7) 주문 생성 - `POST /api/orders` (인증 필요)
-- URL: `http://localhost:8080/api/orders`
-- Headers:
-  - `Authorization: Bearer <accessToken>`
-- Body (JSON):
 ```json
 {
   "branchId": 1,
@@ -438,20 +442,21 @@ npm start
 }
 ```
 
-### 8) 스탬프 개수 조회 - `GET /api/stamps/count` (인증 필요)
-- URL: `http://localhost:8080/api/stamps/count`
-- Headers:
-  - `Authorization: Bearer <accessToken>`
+### 4) 관리자 메뉴 등록 - `POST /api/admin/products` (admin 전용)
 
-### 9) 쿠폰 사용 - `POST /api/coupons/use` (인증 필요)
-- URL: `http://localhost:8080/api/coupons/use`
-- Headers:
-  - `Authorization: Bearer <accessToken>`
-- Body (JSON):
 ```json
 {
-  "couponCode": "CPN-xxxxx"
+  "category_id": 1,
+  "name": "바닐라라떼",
+  "description": "달콤한 바닐라 향",
+  "price": 5000
 }
+```
+
+### 5) 주문 상태 변경 - `PATCH /api/admin/orders/:id/status` (admin 전용)
+
+```json
+{ "status": "making" }
 ```
 
 ### ✅ Postman 체크 포인트
@@ -459,29 +464,19 @@ npm start
 - Body 타입은 반드시 `raw` + `JSON`으로 설정
 - 로그인 후 발급받은 JWT를 `Bearer` 형식으로 전달
 - 실패 응답 형식: `{ "success": false, "message": "에러 메시지" }`
-- 서버 미기동/포트 충돌 시 `PORT` 값 또는 실행 로그 확인
 
 ---
 
 ## 🚨 에러 코드 가이드
 
-| HTTP 코드 | 의미 | 주요 발생 상황 (예시) |
+| HTTP 코드 | 의미 | 주요 발생 상황 |
 |---|---|---|
-| `400 Bad Request` | 잘못된 요청 | 필수 파라미터 누락, 형식 오류, 잘못된 상품 ID |
-| `401 Unauthorized` | 인증 실패 | 토큰 없음, 토큰 만료/위조, 로그인 정보 불일치 |
-| `403 Forbidden` | 접근 거부 | 비활성화 계정 등 정책상 접근 불가 |
-| `404 Not Found` | 리소스 없음 | 존재하지 않는 API 경로, 사용자/상품 미존재 |
-| `409 Conflict` | 충돌 | 이미 가입된 이메일로 회원가입 시도 |
-| `500 Internal Server Error` | 서버 내부 오류 | 예기치 못한 예외, DB 처리 중 미처리 오류 |
-
-### 📌 공통 실패 응답 형식
-
-```json
-{
-  "success": false,
-  "message": "에러 메시지"
-}
-```
+| `400 Bad Request` | 잘못된 요청 | 필수 파라미터 누락, 형식 오류 |
+| `401 Unauthorized` | 인증 실패 | 토큰 없음, 만료/위조 |
+| `403 Forbidden` | 접근 거부 | 비활성화 계정, 관리자 아닌 경우 |
+| `404 Not Found` | 리소스 없음 | 존재하지 않는 API/데이터 |
+| `409 Conflict` | 충돌 | 이미 가입된 이메일 |
+| `500 Internal Server Error` | 서버 내부 오류 | 예기치 못한 예외 |
 
 ---
 
@@ -502,15 +497,20 @@ npm start
 - 스탬프/쿠폰 비즈니스 로직 구현
 - AI 바이브코딩 활용법 (Cursor AI)
 - React 프론트엔드 개발
-- React 컴포넌트 설계       
-- React Router DOM 페이지 라우팅  
+- React 컴포넌트 설계
+- React Router DOM 페이지 라우팅
 - localStorage JWT 토큰 관리
-- Axios 인터셉터 활용          
-- CORS 설정 (프론트-백엔드 연동) 
+- Axios 인터셉터 활용
+- CORS 설정 (프론트-백엔드 연동)
+- **미들웨어 패턴** (인증/권한/에러/CORS/업로드)
+- **role 기반 접근 제어** (admin/user 화면 분리)
+- **Soft Delete 패턴** (is_active = 0으로 논리 삭제)
+- **multer 파일 업로드** (multipart/form-data)
+- **정적 파일 서빙** (express.static)
+- **FormData API** (React에서 파일 전송)
 
 ---
 
 ## ✨ 한 줄 소개
 
-**BREWY는 Node.js 백엔드 + React 프론트엔드 + Python AI 분석까지 갖춘 카페 픽업 주문 풀스택 포트폴리오 프로젝트입니다.**
-
+**BREWY는 Node.js 백엔드 + React 프론트엔드 + Python AI 분석 + 관리자 대시보드까지 갖춘 카페 픽업 주문 풀스택 포트폴리오 프로젝트입니다.**

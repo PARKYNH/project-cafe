@@ -74,6 +74,14 @@ function MainPage() {
         >
           마이페이지
         </button>
+        {localStorage.getItem('role') === 'admin' && (
+          <button
+            style={{ ...styles.myPageBtn, background: '#6f4e37', color: 'white' }}
+            onClick={() => navigate('/admin')}
+          >
+            관리자
+          </button>
+        )}
         <button
           style={styles.logoutBtn}
           onClick={handleLogout}
@@ -113,24 +121,32 @@ function MainPage() {
             {products.map(product => (
               <div
                 key={product.product_id}
-                style={styles.menuCard}
+                style={{
+                  ...styles.menuCard,
+                  opacity: product.is_sold_out === 1 ? 0.6 : 1
+                }}
               >
-                <span style={styles.category}>
-                  {product.category_name}
-                </span>
-                <h3>{product.name}</h3>
-                <p style={styles.desc}>
-                  {product.description}
-                </p>
-                <p style={styles.price}>
-                  {product.price
-                    .toLocaleString()}원
-                </p>
-                {product.is_sold_out === 1 && (
-                  <span style={styles.soldout}>
-                    품절
-                  </span>
+                {/* 메뉴 이미지 */}
+                {product.image_url ? (
+                  <img
+                    src={product.image_url.startsWith('/uploads')
+                      ? `http://localhost:8080${product.image_url}`
+                      : product.image_url}
+                    alt={product.name}
+                    style={styles.menuImg}
+                  />
+                ) : (
+                  <div style={styles.menuImgPlaceholder}>☕</div>
                 )}
+                <div style={{ padding: '12px' }}>
+                  <span style={styles.category}>{product.category_name}</span>
+                  <h3 style={{ margin: '6px 0 4px', fontSize: '15px' }}>{product.name}</h3>
+                  <p style={styles.desc}>{product.description}</p>
+                  <p style={styles.price}>{product.price.toLocaleString()}원</p>
+                  {product.is_sold_out === 1 && (
+                    <span style={styles.soldout}>품절</span>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -209,10 +225,24 @@ const styles = {
   },
   menuCard: {
     backgroundColor: 'white',
-    padding: '20px',
     borderRadius: '12px',
     boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-    position: 'relative'
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  menuImg: {
+    width: '100%',
+    height: '160px',
+    objectFit: 'cover'
+  },
+  menuImgPlaceholder: {
+    width: '100%',
+    height: '160px',
+    background: '#f0e8e0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '40px'
   },
   category: {
     backgroundColor: '#f0e6d3',
