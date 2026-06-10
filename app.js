@@ -1,7 +1,19 @@
 require("dotenv").config();
 
-const express = require("express");
-const cors = require("cors");
+const express  = require("express");
+const cors     = require("cors");
+
+// 📌 morgan: HTTP 요청 로깅 미들웨어
+//    모든 API 호출을 자동으로 콘솔/파일에 기록
+//    "GET /api/products 200 12ms" 형태로 찍힘
+//    더존 서버 로그에서 API 호출 이력 보는 것과 동일!
+const morgan   = require("morgan");
+
+// 📌 express-rate-limit: 요청 횟수 제한 미들웨어
+//    동일 IP에서 단시간에 너무 많은 요청 → 차단
+//    해킹(Brute Force) / DoS 공격 방어
+//    공공기관 ERP 보안 요구사항에도 해당!
+const rateLimit = require("express-rate-limit");
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
@@ -12,14 +24,55 @@ const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
-// CORS 허용 (프론트엔드/모바일 등 다양한 클라이언트에서 접근 가능)
+// ① CORS
+//    프론트(3000) → 백엔드(8080) 호출 허용
+//    AWS 배포 후엔 origin을 실제 도메인으로 변경 필요
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'production'
+    ? process.env.FRONTEND_URL  // 운영: 실제 도메인
+    : 'http://localhost:3000',  // 개발: 로컬
   credentials: true
 }));
 
-// JSON Body 파싱
+// ② Morgan 로깅
+//    개발: 'dev' → 색상 있는 간결한 로그
+//    운영: 'combined' → Apache 표준 형식 (IP, 날짜, 브라우저 정보 포함)
+//    💡 운영 로그는 ecosystem.config.js 의 logs/out.log 파일로 저장됨
+app.use(morgan(
+  process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
+));
+
+// ③ JSON Body 파싱
 app.use(express.json({ limit: "10mb" }));
+
+// ④ Rate Limiting
+//    📌 전체 API 제한: 15분에 200번
+//    일반 사용자는 절대 안 걸리는 수치
+//    봇/해커는 1초에 수백번 요청 → 차단!
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15분
+  max: 200,
+  message: {
+    success: false,
+    message: '요청이 너무 많아요. 잠시 후 다시 시도해주세요.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api', globalLimiter);
+
+//    📌 로그인 전용 제한: 15분에 10번
+//    비밀번호 무차별 대입 공격 방어!
+//    10번 틀리면 15분 잠금 → 은행 앱이랑 같은 방식
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message: '로그인 시도가 너무 많아요. 15분 후 다시 시도해주세요.'
+  }
+});
+app.use('/api/auth/login', loginLimiter);
 
 // 📌 정적 파일 서빙 — 업로드된 이미지를 URL로 접근 가능하게!
 //    http://localhost:8080/uploads/product-1-xxx.jpg 형태로 접근
