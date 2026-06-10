@@ -7,17 +7,34 @@
 
 ## 📸 화면 미리보기
 
-### 🔐 로그인
-![로그인](./screenshots/login.png)
+---
 
-### 🏠 메인 화면 (지점 + 메뉴 이미지 카드)
-![메인](./screenshots/main.png)
+### 👤 일반 유저 화면
 
-### 🤖 AI 메뉴 추천 챗봇
-![챗봇](./screenshots/chatbot.png)
+#### 🔐 로그인
+![로그인](./screenshots/user_login.png)
 
-### 👤 마이페이지 (스탬프 + 쿠폰 + 주문내역)
-![마이페이지](./screenshots/mypage.png)
+#### 🏠 메인 화면 (지점 + 메뉴 이미지 카드)
+![메인](./screenshots/user_main.png)
+
+#### 🤖 AI 메뉴 추천 챗봇
+![챗봇](./screenshots/user_chatbot.png)
+
+#### 👤 마이페이지 (스탬프 + 쿠폰 + 주문내역)
+![마이페이지](./screenshots/user_mypage.png)
+
+---
+
+### 👨‍💼 관리자 화면
+
+#### 🍵 메뉴 관리 (등록 / 수정 / 이미지 업로드 / 비활성화)
+![관리자 메뉴관리](./screenshots/admin_menu.png)
+
+#### 📋 주문 관리 (전체 주문 목록 + 상태 변경)
+![관리자 주문관리](./screenshots/admin_orders.png)
+
+#### 📊 매출 통계 (일별 / 월별 / 지점별 / 메뉴별)
+![관리자 매출통계](./screenshots/admin_stats.png)
 
 ---
 
