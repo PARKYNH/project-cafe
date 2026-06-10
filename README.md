@@ -65,16 +65,25 @@
 - JWT 인증 + bcrypt 암호화
 - dotenv, cors
 - multer (이미지 업로드)
+- morgan (HTTP 요청 로깅)
+- express-rate-limit (요청 횟수 제한 / 보안)
+- PM2 (프로세스 관리 / 운영 배포용)
 
 ### Frontend
 - React.js
 - React Router DOM
 - Axios
+- Recharts (차트 라이브러리)
 
 ### AI/분석
 - Python 3.13
 - pandas, mysql-connector-python
 - OpenAI API (챗봇)
+
+### 인프라 준비
+- ecosystem.config.js (PM2 설정)
+- .env.production.example (운영 환경 변수 양식)
+- logs/ (서버 로그 저장 폴더)
 
 ---
 
@@ -151,12 +160,36 @@
 - 관리자 페이지: 썸네일 + 📷변경 버튼
 - 메인 페이지: 메뉴 카드 이미지 표시
 
-### 🔜 Phase 13. 카카오 소셜 로그인 (예정)
+### ✅ Phase 13. UI 전면 리디자인 + 차트 완료
+- 로그인 페이지: 좌우 분할 레이아웃 + 카페 배경 이미지
+- 메인 페이지: 히어로 배너 + 카테고리 필터 탭 + 호버 효과
+- 마이페이지: 프로필 아바타 + 스탬프 프로그레스바 + 티켓형 쿠폰
+- 관리자 페이지: 요약 카드 4개 + 테이블 줄 색상 개선
+- Recharts 차트 추가
+  - 일별 매출: 막대그래프
+  - 월별 매출: 라인그래프
+  - 지점별 매출: 파이차트
+  - 메뉴별 판매: 가로 막대그래프
 
-### 🔜 Phase 14. AWS EC2 배포 (예정)
-- EC2 서버 배포
-- 도메인 연결
-- 실제 서비스 오픈
+### ✅ Phase 14. 보안 미들웨어 + AWS 배포 준비 완료
+- Morgan: HTTP 요청 자동 로깅 (개발/운영 모드 분리)
+- Rate Limiting: 전체 API 15분/200회, 로그인 15분/10회 제한
+- PM2 설치 + ecosystem.config.js 작성
+- .env.production.example 작성
+- logs/ 폴더 생성
+
+### 🔜 Phase 15. AWS EC2 배포 (예정)
+- EC2 인스턴스 생성 (t2.micro 프리티어)
+- Node.js + MySQL + Nginx 설치
+- PM2로 백엔드 상시 실행
+- React 빌드 + Nginx 정적 서빙
+- 실제 URL로 서비스 오픈
+
+### 🔜 Phase 16. 카카오 소셜 로그인 (예정)
+
+### 🔜 Phase 17. Jest 단위 테스트 (예정)
+
+### 🔜 Phase 18. Docker 컨테이너화 (예정)
 
 ---
 
@@ -528,12 +561,20 @@ npm start
 - localStorage JWT 토큰 관리
 - Axios 인터셉터 활용
 - CORS 설정 (프론트-백엔드 연동)
-- **미들웨어 패턴** (인증/권한/에러/CORS/업로드)
+- **미들웨어 패턴** (인증/권한/에러/CORS/업로드/로깅/보안)
 - **role 기반 접근 제어** (admin/user 화면 분리)
 - **Soft Delete 패턴** (is_active = 0으로 논리 삭제)
 - **multer 파일 업로드** (multipart/form-data)
 - **정적 파일 서빙** (express.static)
 - **FormData API** (React에서 파일 전송)
+- **Morgan 로깅** (HTTP 요청 자동 기록, 개발/운영 모드 분리)
+- **Rate Limiting** (Brute Force 방어, DoS 차단, 은행 앱과 동일 원리)
+- **Recharts 차트** (Bar/Line/Pie/HorizontalBar 차트 구현)
+- **React 조건부 렌더링** (탭 UI, 카테고리 필터링)
+- **PM2** (Node.js 프로세스 관리, 자동 재시작, 로그 파일 저장)
+- **WEB/WAS/DB 인프라 구조** (Nginx/Node.js/MySQL 역할 분리)
+- **환경 분리** (개발/운영 env, NODE_ENV 기반 설정 분기)
+- **MVC 패턴** (routes/controllers/models 레이어 분리)
 
 ---
 
