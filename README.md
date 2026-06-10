@@ -20,8 +20,11 @@
 #### 🤖 AI 메뉴 추천 챗봇
 ![챗봇](./screenshots/user_chatbot.png)
 
-#### 👤 마이페이지 (스탬프 + 쿠폰 + 주문내역)
-![마이페이지](./screenshots/user_mypage.png)
+#### 👤 마이페이지 1 — 프로필 + 스탬프 카드 (7/10 적립)
+![마이페이지1](./screenshots/user_mypage_1.png)
+
+#### 👤 마이페이지 2 — 쿠폰 + 주문 내역
+![마이페이지2](./screenshots/user_mypage_2.png)
 
 ---
 
@@ -33,8 +36,14 @@
 #### 📋 주문 관리 (전체 주문 목록 + 상태 변경)
 ![관리자 주문관리](./screenshots/admin_orders.png)
 
-#### 📊 매출 통계 (일별 / 월별 / 지점별 / 메뉴별)
-![관리자 매출통계](./screenshots/admin_stats.png)
+#### 📊 매출 통계 1 — 일별 막대그래프
+![관리자 통계 일별](./screenshots/admin_stats_1.png)
+
+#### 📊 매출 통계 2 — 월별 라인그래프
+![관리자 통계 월별](./screenshots/admin_stats_2.png)
+
+#### 📊 매출 통계 3 — 지점별 파이차트
+![관리자 통계 지점별](./screenshots/admin_stats_3.png)
 
 ---
 
