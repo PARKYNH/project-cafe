@@ -118,8 +118,22 @@ function LoginPage() {
             {loading ? '로그인 중...' : '계속'}
           </button>
 
+          {/* 카카오 로그인 버튼 */}
+          <button
+            onClick={() => window.location.href = '/api/auth/kakao'}
+            className="w-full py-[14px] bg-[#FEE500] hover:bg-[#F5DC00] active:scale-[0.99] text-[#191919] text-[15px] font-semibold rounded-2xl transition-all duration-150 flex items-center justify-center gap-2 mb-3"
+          >
+            {/* 카카오 로고 SVG */}
+            <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
+              <path fillRule="evenodd" clipRule="evenodd"
+                d="M10 0C4.477 0 0 3.582 0 8c0 2.862 1.838 5.373 4.617 6.868l-1.18 4.404a.5.5 0 00.724.553L9.5 17.2c.165.01.331.015.5.015 5.523 0 10-3.582 10-8s-4.477-8-10-8z"
+                fill="#191919"/>
+            </svg>
+            카카오로 시작하기
+          </button>
+
           {/* 구분선 */}
-          <div className="flex items-center gap-3 my-7">
+          <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-[#E8E8ED]" />
             <span className="text-[12px] text-[#C7C7CC]">테스트 계정</span>
             <div className="flex-1 h-px bg-[#E8E8ED]" />

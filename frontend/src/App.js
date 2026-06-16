@@ -5,10 +5,11 @@ import {
   Route,
   Navigate
 } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import MainPage from './pages/MainPage';
-import MyPage from './pages/MyPage';
-import AdminPage from './pages/AdminPage';
+import LoginPage     from './pages/LoginPage';
+import MainPage      from './pages/MainPage';
+import MyPage        from './pages/MyPage';
+import AdminPage     from './pages/AdminPage';
+import KakaoCallback from './pages/KakaoCallback';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -39,6 +40,11 @@ function App() {
         <Route
           path="/admin"
           element={<AdminPage />}
+        />
+        {/* 카카오 로그인 콜백 */}
+        <Route
+          path="/auth/kakao/success"
+          element={<KakaoCallback />}
         />
       </Routes>
     </BrowserRouter>
