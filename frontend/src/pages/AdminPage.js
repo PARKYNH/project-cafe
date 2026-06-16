@@ -54,7 +54,6 @@ function AdminPage() {
   const loadStats = async (type) => {
     try {
       const r = await api.get(`/api/admin/stats/${type}`);
-      // MySQL SUM() 결과가 문자열로 올 수 있어서 숫자로 변환
       const data = r.data.data.map(d => ({
         ...d,
         매출: Number(d.매출) || 0,
@@ -108,66 +107,68 @@ function AdminPage() {
   const handleLogout = () => { localStorage.clear(); navigate('/login'); };
   const totalRevenue = orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + o.total_price, 0);
 
-  const inputCls = "w-full px-3 py-2.5 text-sm bg-[#F5F5F7] border border-[#D2D2D7] rounded-xl outline-none focus:border-[#6F4E37] focus:ring-2 focus:ring-[#6F4E37]/10 transition-all";
+  const inputCls = "w-full px-4 py-3 text-sm bg-[#F5F5F7] border border-[#E8E8ED] rounded-2xl outline-none focus:border-[#6F4E37] focus:ring-2 focus:ring-[#6F4E37]/10 transition-all";
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] font-sans">
 
-      {/* ── 헤더 ── */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#D2D2D7]/50">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+      {/* ── 헤더 — Apple 스타일 슬림 네비 ── */}
+      <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.78)] backdrop-blur-2xl border-b border-black/5">
+        <div className="max-w-7xl mx-auto px-8 h-12 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-black tracking-widest text-[#1D1D1F]">BREWY</h1>
-            <span className="hidden sm:block text-xs font-medium text-[#86868B] bg-[#F5F5F7] px-2.5 py-1 rounded-full">
+            <h1 className="text-lg font-black tracking-[6px] text-[#1D1D1F]">BREWY</h1>
+            <span className="hidden sm:block text-xs font-medium text-[#86868B] bg-[#F5F5F7] px-3 py-1 rounded-full">
               관리자 대시보드
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#6F4E37] rounded-full flex items-center justify-center text-white text-sm font-bold">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mr-2">
+              <div className="w-7 h-7 bg-[#6F4E37] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                 {adminName.charAt(0)}
               </div>
               <span className="hidden sm:block text-sm font-medium text-[#1D1D1F]">{adminName}</span>
             </div>
-            <button onClick={() => navigate('/main')} className="px-3 py-1.5 text-xs font-medium text-[#86868B] hover:text-[#1D1D1F] hover:bg-[#F5F5F7] rounded-full transition-colors">
+            <button onClick={() => navigate('/main')} className="px-4 py-1.5 text-sm text-[#86868B] hover:text-[#1D1D1F] rounded-full transition-colors">
               ← 메인
             </button>
-            <button onClick={handleLogout} className="px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-50 rounded-full transition-colors">
+            <button onClick={handleLogout} className="px-4 py-1.5 text-sm text-red-400 hover:text-red-500 rounded-full transition-colors">
               로그아웃
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── 요약 카드 ── */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      {/* ── 콘텐츠 ── */}
+      <div className="max-w-7xl mx-auto px-8 py-10">
+
+        {/* ── 요약 카드 ── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
           {[
             { icon: '🍵', label: '전체 메뉴', value: `${products.length}개`, color: 'text-[#6F4E37]' },
             { icon: '📋', label: '전체 주문', value: `${orders.length}건`, color: 'text-blue-500' },
             { icon: '✅', label: '완료 주문', value: `${orders.filter(o=>o.status==='done').length}건`, color: 'text-green-500' },
             { icon: '💰', label: '총 매출', value: `${totalRevenue.toLocaleString()}원`, color: 'text-amber-500' },
           ].map((s, i) => (
-            <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-[#F0F0F0] flex items-center gap-4">
-              <div className="w-11 h-11 bg-[#F5F5F7] rounded-xl flex items-center justify-center text-xl">{s.icon}</div>
+            <div key={i} className="bg-white rounded-3xl p-7 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0] flex items-center gap-4">
+              <div className="w-12 h-12 bg-[#F5F5F7] rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">{s.icon}</div>
               <div>
-                <p className="text-xs text-[#86868B]">{s.label}</p>
-                <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-xs text-[#86868B] mb-0.5">{s.label}</p>
+                <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* ── 탭 ── */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-7">
           {[{ key:'menu', label:'메뉴 관리' }, { key:'orders', label:'주문 관리' }, { key:'stats', label:'매출 통계' }].map(t => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 tab === t.key
                   ? 'bg-[#1D1D1F] text-white shadow-sm'
-                  : 'bg-white text-[#86868B] border border-[#D2D2D7] hover:text-[#1D1D1F]'
+                  : 'bg-white text-[#86868B] border border-[#E8E8ED] hover:text-[#1D1D1F] hover:border-[#1D1D1F]'
               }`}
             >
               {t.label}
@@ -179,8 +180,8 @@ function AdminPage() {
         {tab === 'menu' && (
           <div className="space-y-5">
             {/* 신규 등록 */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
-              <h3 className="font-bold text-[#1D1D1F] mb-4">신규 메뉴 등록</h3>
+            <div className="bg-white rounded-3xl p-7 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
+              <h3 className="font-bold text-[#1D1D1F] mb-5">신규 메뉴 등록</h3>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 <select className={inputCls} value={newProduct.category_id}
                   onChange={e => setNewProduct({ ...newProduct, category_id: Number(e.target.value) })}>
@@ -195,15 +196,15 @@ function AdminPage() {
                 <input className={inputCls} placeholder="설명 (선택)" value={newProduct.description}
                   onChange={e => setNewProduct({ ...newProduct, description: e.target.value })} />
                 <button onClick={handleCreateProduct}
-                  className="px-4 py-2.5 bg-[#6F4E37] hover:bg-[#5C3D28] text-white text-sm font-semibold rounded-xl transition-colors">
+                  className="px-4 py-3 bg-[#6F4E37] hover:bg-[#5C3D28] text-white text-sm font-semibold rounded-2xl transition-colors">
                   등록하기
                 </button>
               </div>
             </div>
 
             {/* 메뉴 목록 */}
-            <div className="bg-white rounded-2xl shadow-sm border border-[#F0F0F0] overflow-hidden">
-              <div className="px-6 py-4 border-b border-[#F0F0F0] flex items-center justify-between">
+            <div className="bg-white rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0] overflow-hidden">
+              <div className="px-7 py-5 border-b border-[#F5F5F7] flex items-center justify-between">
                 <h3 className="font-bold text-[#1D1D1F]">메뉴 목록</h3>
                 <span className="text-sm text-[#86868B]">{products.length}개</span>
               </div>
@@ -212,20 +213,20 @@ function AdminPage() {
                   <thead className="bg-[#F5F5F7]">
                     <tr>
                       {['이미지','카테고리','메뉴명','가격','상태','관리'].map(h => (
-                        <th key={h} className="px-4 py-3 text-xs font-semibold text-[#86868B] text-left">{h}</th>
+                        <th key={h} className="px-5 py-4 text-xs font-semibold text-[#86868B] text-left">{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {products.map((p, i) => (
-                      <tr key={p.product_id} className={`border-t border-[#F0F0F0] ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'}`}>
-                        <td className="px-4 py-3">
+                      <tr key={p.product_id} className={`border-t border-[#F5F5F7] ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'}`}>
+                        <td className="px-5 py-4">
                           <div className="flex flex-col items-center gap-1.5">
                             {p.image_url ? (
                               <img src={p.image_url.startsWith('/uploads') ? `${process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080'}${p.image_url}` : p.image_url}
-                                alt={p.name} className="w-12 h-12 object-cover rounded-xl" />
+                                alt={p.name} className="w-14 h-14 object-cover rounded-2xl" />
                             ) : (
-                              <div className="w-12 h-12 bg-[#F5F5F7] rounded-xl flex items-center justify-center text-xl">☕</div>
+                              <div className="w-14 h-14 bg-[#F5F5F7] rounded-2xl flex items-center justify-center text-2xl">☕</div>
                             )}
                             <label className="text-xs cursor-pointer text-[#6F4E37] hover:underline">
                               {uploadingId === p.product_id ? '⏳' : '📷 변경'}
@@ -234,35 +235,35 @@ function AdminPage() {
                             </label>
                           </div>
                         </td>
-                        <td className="px-4 py-3">
-                          <span className="px-2.5 py-1 bg-[#F5F5F7] text-[#86868B] text-xs rounded-lg">{p.category_name}</span>
+                        <td className="px-5 py-4">
+                          <span className="px-3 py-1 bg-[#F5F5F7] text-[#86868B] text-xs rounded-full">{p.category_name}</span>
                         </td>
-                        <td className="px-4 py-3 text-sm font-medium text-[#1D1D1F]">
+                        <td className="px-5 py-4 text-sm font-medium text-[#1D1D1F]">
                           {editId === p.product_id
                             ? <input className={inputCls + ' w-32'} defaultValue={p.name} onChange={e => setEditProduct({ ...editProduct, name: e.target.value })} />
                             : p.name}
                         </td>
-                        <td className="px-4 py-3 text-sm text-[#1D1D1F]">
+                        <td className="px-5 py-4 text-sm text-[#1D1D1F]">
                           {editId === p.product_id
                             ? <input className={inputCls + ' w-24'} type="number" defaultValue={p.price} onChange={e => setEditProduct({ ...editProduct, price: e.target.value })} />
                             : `${p.price?.toLocaleString()}원`}
                         </td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${p.is_sold_out ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'}`}>
+                        <td className="px-5 py-4">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${p.is_sold_out ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'}`}>
                             {p.is_sold_out ? '품절' : '판매중'}
                           </span>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-5 py-4">
                           <div className="flex gap-2">
                             {editId === p.product_id ? (
                               <>
-                                <button onClick={() => handleUpdateProduct(p.product_id)} className="px-3 py-1.5 bg-[#6F4E37] text-white text-xs rounded-lg hover:bg-[#5C3D28] transition-colors">저장</button>
-                                <button onClick={() => setEditId(null)} className="px-3 py-1.5 bg-[#F5F5F7] text-[#86868B] text-xs rounded-lg transition-colors">취소</button>
+                                <button onClick={() => handleUpdateProduct(p.product_id)} className="px-3.5 py-1.5 bg-[#6F4E37] text-white text-xs rounded-xl hover:bg-[#5C3D28] transition-colors">저장</button>
+                                <button onClick={() => setEditId(null)} className="px-3.5 py-1.5 bg-[#F5F5F7] text-[#86868B] text-xs rounded-xl transition-colors">취소</button>
                               </>
                             ) : (
                               <>
-                                <button onClick={() => { setEditId(p.product_id); setEditProduct(p); }} className="px-3 py-1.5 bg-[#F5F5F7] text-[#1D1D1F] text-xs rounded-lg hover:bg-[#E8E8ED] transition-colors">수정</button>
-                                <button onClick={() => handleDeleteProduct(p.product_id, p.name)} className="px-3 py-1.5 bg-red-50 text-red-500 text-xs rounded-lg hover:bg-red-100 transition-colors">삭제</button>
+                                <button onClick={() => { setEditId(p.product_id); setEditProduct(p); }} className="px-3.5 py-1.5 bg-[#F5F5F7] text-[#1D1D1F] text-xs rounded-xl hover:bg-[#E8E8ED] transition-colors">수정</button>
+                                <button onClick={() => handleDeleteProduct(p.product_id, p.name)} className="px-3.5 py-1.5 bg-red-50 text-red-500 text-xs rounded-xl hover:bg-red-100 transition-colors">삭제</button>
                               </>
                             )}
                           </div>
@@ -278,8 +279,8 @@ function AdminPage() {
 
         {/* ══ 주문 관리 ══ */}
         {tab === 'orders' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-[#F0F0F0] overflow-hidden">
-            <div className="px-6 py-4 border-b border-[#F0F0F0] flex items-center justify-between">
+          <div className="bg-white rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0] overflow-hidden">
+            <div className="px-7 py-5 border-b border-[#F5F5F7] flex items-center justify-between">
               <h3 className="font-bold text-[#1D1D1F]">전체 주문 목록</h3>
               <span className="text-sm text-[#86868B]">{orders.length}건</span>
             </div>
@@ -288,21 +289,21 @@ function AdminPage() {
                 <thead className="bg-[#F5F5F7]">
                   <tr>
                     {['주문번호','금액','픽업시간','상태 변경'].map(h => (
-                      <th key={h} className="px-4 py-3 text-xs font-semibold text-[#86868B] text-left">{h}</th>
+                      <th key={h} className="px-5 py-4 text-xs font-semibold text-[#86868B] text-left">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {orders.map((o, i) => (
-                    <tr key={o.order_id} className={`border-t border-[#F0F0F0] ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'}`}>
-                      <td className="px-4 py-3 text-xs text-[#86868B] font-mono">{o.order_number}</td>
-                      <td className="px-4 py-3 text-sm font-semibold text-[#1D1D1F]">{o.total_price?.toLocaleString()}원</td>
-                      <td className="px-4 py-3 text-xs text-[#86868B]">{new Date(o.pickup_time).toLocaleString()}</td>
-                      <td className="px-4 py-3">
+                    <tr key={o.order_id} className={`border-t border-[#F5F5F7] ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'}`}>
+                      <td className="px-5 py-4 text-xs text-[#86868B] font-mono">{o.order_number}</td>
+                      <td className="px-5 py-4 text-sm font-semibold text-[#1D1D1F]">{o.total_price?.toLocaleString()}원</td>
+                      <td className="px-5 py-4 text-xs text-[#86868B]">{new Date(o.pickup_time).toLocaleString()}</td>
+                      <td className="px-5 py-4">
                         <select
                           value={o.status}
                           onChange={e => handleStatusChange(o.order_id, e.target.value)}
-                          className="px-2.5 py-1.5 text-xs border border-[#D2D2D7] rounded-lg bg-white outline-none focus:border-[#6F4E37] transition-colors"
+                          className="px-3 py-2 text-xs border border-[#E8E8ED] rounded-xl bg-white outline-none focus:border-[#6F4E37] transition-colors"
                         >
                           {ORDER_STATUS.map(s => (
                             <option key={s} value={s}>{STATUS_KR[s]}</option>
@@ -324,54 +325,54 @@ function AdminPage() {
             <div className="flex gap-2">
               {[{ key:'daily',label:'일별' },{ key:'monthly',label:'월별' },{ key:'branch',label:'지점별' },{ key:'menu',label:'메뉴별' }].map(t => (
                 <button key={t.key} onClick={() => setStatsTab(t.key)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    statsTab === t.key ? 'bg-[#6F4E37] text-white' : 'bg-white text-[#86868B] border border-[#D2D2D7] hover:text-[#1D1D1F]'
+                  className={`px-5 py-2 rounded-full text-xs font-medium transition-all ${
+                    statsTab === t.key ? 'bg-[#6F4E37] text-white' : 'bg-white text-[#86868B] border border-[#E8E8ED] hover:text-[#1D1D1F]'
                   }`}>
                   {t.label}
                 </button>
               ))}
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
+            <div className="bg-white rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
               {statsData.length === 0 ? (
-                <p className="text-sm text-[#AEAEB2] py-8 text-center">데이터가 없어요</p>
+                <p className="text-sm text-[#AEAEB2] py-12 text-center">데이터가 없어요</p>
               ) : (
                 <>
                   {statsTab === 'daily' && (
                     <ResponsiveContainer width="100%" height={300}>
                       <BarChart data={statsData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F7" />
                         <XAxis dataKey="날짜" tick={{ fontSize: 11, fill: '#86868B' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#86868B' }} />
-                        <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #F0F0F0', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }} />
-                        <Bar dataKey="매출" fill={BROWN} radius={[6,6,0,0]} />
+                        <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid #F0F0F0', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }} />
+                        <Bar dataKey="매출" fill={BROWN} radius={[8,8,0,0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   )}
                   {statsTab === 'monthly' && (
                     <ResponsiveContainer width="100%" height={300}>
                       <LineChart data={statsData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F7" />
                         <XAxis dataKey="월" tick={{ fontSize: 11, fill: '#86868B' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#86868B' }} />
-                        <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #F0F0F0' }} />
+                        <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid #F0F0F0' }} />
                         <Line type="monotone" dataKey="매출" stroke={BROWN} strokeWidth={2.5} dot={{ fill: BROWN, r: 4 }} />
                       </LineChart>
                     </ResponsiveContainer>
                   )}
                   {statsTab === 'branch' && (
-                    <div className="flex flex-col md:flex-row items-center gap-8">
+                    <div className="flex flex-col md:flex-row items-center gap-10">
                       <div style={{ width: '100%', height: 280 }}>
                       <ResponsiveContainer width="100%" height={280}>
                         <PieChart>
                           <Pie data={statsData} dataKey="매출" nameKey="지점명" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                             {statsData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                           </Pie>
-                          <Tooltip contentStyle={{ borderRadius: '12px' }} />
+                          <Tooltip contentStyle={{ borderRadius: '16px' }} />
                         </PieChart>
                       </ResponsiveContainer>
                       </div>
-                      <div className="space-y-2 min-w-[200px]">
+                      <div className="space-y-3 min-w-[200px]">
                         {statsData.map((d, i) => (
                           <div key={i} className="flex items-center gap-3">
                             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
@@ -385,11 +386,11 @@ function AdminPage() {
                   {statsTab === 'menu' && (
                     <ResponsiveContainer width="100%" height={300}>
                       <BarChart data={statsData} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F7" />
                         <XAxis type="number" tick={{ fontSize: 11, fill: '#86868B' }} />
                         <YAxis dataKey="메뉴명" type="category" width={90} tick={{ fontSize: 11, fill: '#86868B' }} />
-                        <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #F0F0F0' }} />
-                        <Bar dataKey="주문수량" fill={BROWN} radius={[0,6,6,0]} />
+                        <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid #F0F0F0' }} />
+                        <Bar dataKey="주문수량" fill={BROWN} radius={[0,8,8,0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   )}

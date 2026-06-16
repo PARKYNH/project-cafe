@@ -59,7 +59,7 @@ function MainPage() {
     return (
       <div className="flex items-center justify-center h-screen bg-[#F5F5F7]">
         <div className="text-center">
-          <div className="text-3xl font-black tracking-widest text-[#1D1D1F] mb-3">BREWY</div>
+          <div className="text-4xl font-black tracking-[10px] text-[#1D1D1F] mb-4">BREWY</div>
           <p className="text-sm text-[#86868B]">잠시만 기다려주세요...</p>
         </div>
       </div>
@@ -69,31 +69,31 @@ function MainPage() {
   return (
     <div className="min-h-screen bg-[#F5F5F7] font-sans">
 
-      {/* ── 헤더 ── */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#D2D2D7]/50">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <h1 className="text-xl font-black tracking-widest text-[#1D1D1F]">BREWY</h1>
-          <nav className="flex items-center gap-3">
-            <span className="hidden sm:block text-sm text-[#86868B]">
-              안녕하세요, <span className="font-semibold text-[#1D1D1F]">{user?.name}</span>님
+      {/* ── 헤더 — Apple 스타일 슬림 네비 ── */}
+      <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.78)] backdrop-blur-2xl border-b border-black/5">
+        <div className="max-w-6xl mx-auto px-8 h-12 flex items-center justify-between">
+          <h1 className="text-lg font-black tracking-[6px] text-[#1D1D1F]">BREWY</h1>
+          <nav className="flex items-center gap-1">
+            <span className="hidden sm:block text-sm text-[#86868B] mr-3">
+              안녕하세요, <span className="font-medium text-[#1D1D1F]">{user?.name}</span>님
             </span>
             <button
               onClick={() => navigate('/mypage')}
-              className="px-4 py-1.5 text-sm font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] rounded-full transition-colors"
+              className="px-4 py-1.5 text-sm text-[#1D1D1F] hover:text-[#6F4E37] rounded-full transition-colors"
             >
               마이페이지
             </button>
             {localStorage.getItem('role') === 'admin' && (
               <button
                 onClick={() => navigate('/admin')}
-                className="px-4 py-1.5 text-sm font-medium text-[#0071E3] hover:bg-[#0071E3]/10 rounded-full transition-colors"
+                className="px-4 py-1.5 text-sm text-[#0071E3] hover:text-[#0077ED] rounded-full transition-colors"
               >
                 관리자
               </button>
             )}
             <button
               onClick={handleLogout}
-              className="px-4 py-1.5 text-sm font-medium text-[#86868B] hover:bg-[#F5F5F7] rounded-full transition-colors"
+              className="px-4 py-1.5 text-sm text-[#86868B] hover:text-[#1D1D1F] rounded-full transition-colors"
             >
               로그아웃
             </button>
@@ -101,61 +101,59 @@ function MainPage() {
         </div>
       </header>
 
-      {/* ── 히어로 ── */}
+      {/* ── 히어로 — 풀 임팩트 ── */}
       <div
-        className="relative h-72 flex items-center justify-center overflow-hidden"
+        className="relative h-[480px] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400)',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=90&fit=crop)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" />
-        <div className="relative z-10 text-center text-white px-6">
-          <p className="text-xs font-semibold tracking-[4px] text-white/70 mb-3 uppercase">BREWY CAFE</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/45 to-black/60" />
+        <div className="relative z-10 text-center text-white px-8">
+          <p className="text-xs font-semibold tracking-[5px] text-white/60 mb-4 uppercase">BREWY CAFE</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-5 leading-tight tracking-tight drop-shadow-md">
             오늘의 한 잔,<br />미리 주문하고 바로 픽업
           </h2>
-          <p className="text-sm text-white/70">대기 없이 편리하게, 브루이 카페의 시그니처 메뉴를 만나보세요</p>
+          <p className="text-base text-white/65 tracking-wide">대기 없이 편리하게, 브루이 카페의 시그니처 메뉴를 만나보세요</p>
         </div>
       </div>
 
-      <main className="max-w-6xl mx-auto px-6 py-10">
+      <main className="max-w-6xl mx-auto px-8 py-16">
 
         {/* ── 지점 안내 ── */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-[#1D1D1F]">지점 안내</h2>
+        <section className="mb-20">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-[#1D1D1F] tracking-tight">지점 안내</h2>
             <span className="text-sm text-[#86868B]">{branches.length}개 지점 운영중</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {branches.map(b => (
               <div
                 key={b.branch_id}
-                className="bg-white rounded-2xl p-5 shadow-sm border border-[#F0F0F0] hover:shadow-md transition-shadow"
+                className="bg-white rounded-3xl p-7 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0] hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300"
               >
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="w-10 h-10 bg-[#F5F5F7] rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="w-12 h-12 bg-[#F5F5F7] rounded-2xl flex items-center justify-center text-xl flex-shrink-0">
                     📍
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#1D1D1F] text-sm">{b.name}</h3>
-                    <p className="text-xs text-[#86868B] mt-0.5">{b.address}</p>
+                    <h3 className="font-semibold text-[#1D1D1F] text-base">{b.name}</h3>
+                    <p className="text-xs text-[#86868B] mt-1 leading-relaxed">{b.address}</p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-xs text-[#86868B] flex items-center gap-1.5">
+                <div className="flex flex-col gap-2 mb-4">
+                  <span className="text-xs text-[#86868B] flex items-center gap-2">
                     <span>📞</span> {b.phone}
                   </span>
-                  <span className="text-xs text-[#86868B] flex items-center gap-1.5">
+                  <span className="text-xs text-[#86868B] flex items-center gap-2">
                     <span>🕐</span> {b.open_time} ~ {b.close_time}
                   </span>
                 </div>
-                <div className="mt-3">
-                  <span className="inline-block px-2.5 py-1 bg-green-50 text-green-600 text-xs font-medium rounded-full">
-                    영업중
-                  </span>
-                </div>
+                <span className="inline-block px-3 py-1 bg-green-50 text-green-600 text-xs font-semibold rounded-full">
+                  영업중
+                </span>
               </div>
             ))}
           </div>
@@ -163,21 +161,21 @@ function MainPage() {
 
         {/* ── 메뉴 ── */}
         <section>
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-bold text-[#1D1D1F]">메뉴</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-[#1D1D1F] tracking-tight">메뉴</h2>
             <span className="text-sm text-[#86868B]">{filteredProducts.length}개</span>
           </div>
 
           {/* 카테고리 탭 */}
-          <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+          <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveTab(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                   activeTab === cat
                     ? 'bg-[#1D1D1F] text-white shadow-sm'
-                    : 'bg-white text-[#86868B] border border-[#D2D2D7] hover:border-[#1D1D1F] hover:text-[#1D1D1F]'
+                    : 'bg-white text-[#86868B] border border-[#E8E8ED] hover:border-[#1D1D1F] hover:text-[#1D1D1F]'
                 }`}
               >
                 {cat}
@@ -186,11 +184,11 @@ function MainPage() {
           </div>
 
           {/* 메뉴 그리드 */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredProducts.map(p => (
               <div
                 key={p.product_id}
-                className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-[#F0F0F0] transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${
+                className={`bg-white rounded-3xl overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-[#F0F0F0] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] ${
                   p.is_sold_out === 1 ? 'opacity-50' : ''
                 }`}
               >
@@ -200,16 +198,16 @@ function MainPage() {
                     <img
                       src={getImageUrl(p.image_url)}
                       alt={p.name}
-                      className="w-full h-40 object-cover"
+                      className="w-full h-52 object-cover"
                     />
                   ) : (
-                    <div className="w-full h-40 bg-[#F5F5F7] flex items-center justify-center text-4xl">
+                    <div className="w-full h-52 bg-gradient-to-br from-[#F5F5F7] to-[#EBEBF0] flex items-center justify-center text-5xl">
                       ☕
                     </div>
                   )}
                   {p.is_sold_out === 1 && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <span className="bg-white text-[#1D1D1F] text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-white text-[#1D1D1F] text-xs font-bold px-4 py-1.5 rounded-full">
                         품절
                       </span>
                     </div>
@@ -217,13 +215,13 @@ function MainPage() {
                 </div>
 
                 {/* 정보 */}
-                <div className="p-4">
-                  <span className="inline-block px-2 py-0.5 bg-[#F5F5F7] text-[#86868B] text-xs rounded-md mb-2">
+                <div className="p-5">
+                  <span className="inline-block px-2.5 py-1 bg-[#F5F5F7] text-[#86868B] text-xs rounded-full mb-2.5">
                     {p.category_name}
                   </span>
-                  <h3 className="font-semibold text-[#1D1D1F] text-sm mb-1">{p.name}</h3>
-                  <p className="text-xs text-[#AEAEB2] mb-2 line-clamp-2">{p.description}</p>
-                  <p className="font-bold text-[#1D1D1F] text-base">
+                  <h3 className="font-semibold text-[#1D1D1F] text-base mb-1.5 leading-snug">{p.name}</h3>
+                  <p className="text-xs text-[#AEAEB2] mb-3 line-clamp-2 leading-relaxed">{p.description}</p>
+                  <p className="font-bold text-[#1D1D1F] text-lg">
                     {p.price?.toLocaleString()}원
                   </p>
                 </div>

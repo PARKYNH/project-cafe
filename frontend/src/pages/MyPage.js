@@ -52,44 +52,44 @@ function MyPage() {
     cancelled: { label: '취소됨',   tw: 'bg-gray-100 text-gray-400' }
   };
 
-  const stampNum     = stampCount?.stampCount || 0;
-  const progress     = Math.min((stampNum / 10) * 100, 100);
-  const initials     = user?.name?.charAt(0) || '?';
+  const stampNum      = stampCount?.stampCount || 0;
+  const progress      = Math.min((stampNum / 10) * 100, 100);
+  const initials      = user?.name?.charAt(0) || '?';
   const activeCoupons = coupons.filter(c => c.status === 'active').length;
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] font-sans">
 
-      {/* ── 헤더 ── */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#D2D2D7]/50">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+      {/* ── 헤더 — Apple 스타일 슬림 네비 ── */}
+      <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.78)] backdrop-blur-2xl border-b border-black/5">
+        <div className="max-w-3xl mx-auto px-8 h-12 flex items-center justify-between">
           <button
             onClick={() => navigate('/main')}
-            className="flex items-center gap-1.5 text-sm font-medium text-[#6F4E37] hover:text-[#5C3D28] transition-colors"
+            className="flex items-center gap-1.5 text-sm text-[#6F4E37] hover:text-[#5C3D28] transition-colors"
           >
             ← 메인으로
           </button>
-          <h1 className="text-base font-bold text-[#1D1D1F]">마이페이지</h1>
+          <h1 className="text-sm font-bold text-[#1D1D1F] tracking-wide">마이페이지</h1>
           <div className="w-20" />
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-5">
+      <main className="max-w-3xl mx-auto px-8 py-12 space-y-5">
 
         {/* ── 프로필 카드 ── */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-[#6F4E37] rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+        <div className="bg-white rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
+          <div className="flex items-center justify-between flex-wrap gap-5">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 bg-[#6F4E37] rounded-full flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
                 {initials}
               </div>
               <div>
-                <h2 className="text-lg font-bold text-[#1D1D1F]">{user?.name}님</h2>
-                <p className="text-sm text-[#86868B]">{user?.email}</p>
-                <span className="inline-block mt-1 px-2.5 py-0.5 bg-[#F5F5F7] text-[#86868B] text-xs rounded-full">일반회원</span>
+                <h2 className="text-xl font-bold text-[#1D1D1F] tracking-tight">{user?.name}님</h2>
+                <p className="text-sm text-[#86868B] mt-0.5">{user?.email}</p>
+                <span className="inline-block mt-2 px-3 py-0.5 bg-[#F5F5F7] text-[#86868B] text-xs rounded-full">일반회원</span>
               </div>
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-8">
               {[
                 { num: stampNum, label: '스탬프' },
                 { num: activeCoupons, label: '사용가능 쿠폰' },
@@ -97,7 +97,7 @@ function MyPage() {
               ].map((s, i) => (
                 <div key={i} className="text-center">
                   <div className="text-2xl font-bold text-[#1D1D1F]">{s.num}</div>
-                  <div className="text-xs text-[#86868B] mt-0.5">{s.label}</div>
+                  <div className="text-xs text-[#86868B] mt-1">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -105,20 +105,20 @@ function MyPage() {
         </div>
 
         {/* ── 스탬프 카드 ── */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-[#1D1D1F]">스탬프 카드</h3>
+        <div className="bg-white rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="font-bold text-[#1D1D1F] text-base">스탬프 카드</h3>
             <span className="text-sm font-semibold text-[#6F4E37]">{stampNum} / 10</span>
           </div>
 
           {/* 스탬프 도트 */}
-          <div className="grid grid-cols-5 gap-3 mb-4">
+          <div className="grid grid-cols-5 gap-4 mb-6">
             {Array.from({ length: 10 }, (_, i) => (
               <div
                 key={i}
-                className={`aspect-square rounded-full flex items-center justify-center text-sm transition-all ${
+                className={`aspect-square rounded-full flex items-center justify-center text-base transition-all duration-300 ${
                   i < stampNum
-                    ? 'bg-[#6F4E37] text-white shadow-sm'
+                    ? 'bg-[#6F4E37] text-white shadow-md'
                     : 'bg-[#F5F5F7] border-2 border-[#E8E8ED]'
                 }`}
               >
@@ -134,37 +134,37 @@ function MyPage() {
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-xs text-[#AEAEB2] mt-2">
+          <p className="text-xs text-[#AEAEB2] mt-3">
             {stampNum >= 10 ? '🎉 쿠폰 발급 완료!' : `${10 - stampNum}개 더 모으면 쿠폰 증정!`}
           </p>
         </div>
 
         {/* ── 쿠폰 ── */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
-          <h3 className="font-bold text-[#1D1D1F] mb-4">
+        <div className="bg-white rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
+          <h3 className="font-bold text-[#1D1D1F] mb-5 text-base">
             쿠폰 <span className="text-[#6F4E37]">{activeCoupons}장 사용가능</span>
           </h3>
           {coupons.length === 0 ? (
-            <p className="text-sm text-[#AEAEB2] py-4 text-center">보유한 쿠폰이 없어요</p>
+            <p className="text-sm text-[#AEAEB2] py-6 text-center">보유한 쿠폰이 없어요</p>
           ) : (
             <div className="space-y-3">
               {coupons.map(c => (
                 <div
                   key={c.coupon_id}
-                  className={`flex items-center justify-between p-4 rounded-xl border-l-4 ${
+                  className={`flex items-center justify-between p-5 rounded-2xl border-l-4 transition-all ${
                     c.status === 'active'
                       ? 'bg-[#FFF8F5] border-[#6F4E37]'
-                      : 'bg-[#F5F5F7] border-[#D2D2D7] opacity-60'
+                      : 'bg-[#F5F5F7] border-[#E8E8ED] opacity-60'
                   }`}
                 >
                   <div>
                     <p className="text-sm font-semibold text-[#1D1D1F]">무료 음료 쿠폰</p>
                     <p className="text-xs text-[#86868B] mt-0.5">{c.coupon_code}</p>
-                    <p className="text-xs text-[#AEAEB2]">
+                    <p className="text-xs text-[#AEAEB2] mt-0.5">
                       만료: {new Date(c.expired_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  <span className={`px-3.5 py-1.5 rounded-full text-xs font-semibold ${
                     c.status === 'active' ? 'bg-[#6F4E37] text-white' :
                     c.status === 'used'   ? 'bg-gray-200 text-gray-500' :
                                             'bg-gray-200 text-gray-400'
@@ -178,10 +178,10 @@ function MyPage() {
         </div>
 
         {/* ── 주문 내역 ── */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#F0F0F0]">
-          <h3 className="font-bold text-[#1D1D1F] mb-4">주문 내역</h3>
+        <div className="bg-white rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#F0F0F0]">
+          <h3 className="font-bold text-[#1D1D1F] mb-5 text-base">주문 내역</h3>
           {orders.length === 0 ? (
-            <p className="text-sm text-[#AEAEB2] py-4 text-center">주문 내역이 없어요</p>
+            <p className="text-sm text-[#AEAEB2] py-6 text-center">주문 내역이 없어요</p>
           ) : (
             <div className="space-y-3">
               {orders.map(o => {
@@ -189,11 +189,11 @@ function MyPage() {
                 return (
                   <div
                     key={o.order_id}
-                    className="flex items-center justify-between p-4 bg-[#F5F5F7] rounded-xl"
+                    className="flex items-center justify-between p-5 bg-[#F5F5F7] rounded-2xl"
                   >
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${s.tw}`}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className={`px-3 py-0.5 rounded-full text-xs font-semibold ${s.tw}`}>
                           {s.label}
                         </span>
                         <span className="text-xs text-[#AEAEB2]">{o.order_number}</span>
@@ -208,7 +208,7 @@ function MyPage() {
                     {o.status === 'pending' && (
                       <button
                         onClick={() => handleCancelOrder(o.order_id)}
-                        className="px-3 py-1.5 text-xs font-medium text-red-500 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+                        className="px-4 py-2 text-xs font-medium text-red-500 border border-red-200 rounded-xl hover:bg-red-50 transition-colors"
                       >
                         취소
                       </button>
