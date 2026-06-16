@@ -97,20 +97,19 @@ function MainPage() {
       </header>
 
       {/* ────────────────────────────────────────
-          히어로 — 어두운 배경 + 압도적 대형 텍스트
+          히어로 — 컬러 커피 이미지 + 그라데이션
       ──────────────────────────────────────── */}
       <div
-        className="relative flex items-center justify-center overflow-hidden bg-[#1D1D1F]"
+        className="relative flex items-center justify-center overflow-hidden"
         style={{
           minHeight: '620px',
           backgroundImage: 'url(https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&q=80&fit=crop)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundBlendMode: 'luminosity',
         }}
       >
-        {/* 가벼운 어두운 레이어 */}
-        <div className="absolute inset-0 bg-[#1D1D1F]/60" />
+        {/* 상단 얇게 → 하단 진하게 — 텍스트만 읽히도록 */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/40 to-black/70" />
 
         <div className="relative z-10 text-center text-white px-6 py-28">
           <p className="text-[11px] font-semibold tracking-[6px] text-white/40 uppercase mb-8">
@@ -133,14 +132,14 @@ function MainPage() {
       {/* ────────────────────────────────────────
           지점 안내 — 순백 배경, 대형 헤드라인
       ──────────────────────────────────────── */}
-      <section className="bg-white py-[96px]">
+      <section className="bg-white py-20">
         <div className="max-w-[1200px] mx-auto px-6">
 
-          <div className="mb-14">
-            <h2 className="text-[48px] font-bold text-[#1D1D1F] tracking-tight leading-[1.08] mb-3">
+          <div className="mb-12">
+            <h2 className="text-[34px] font-bold text-[#1D1D1F] tracking-tight mb-2">
               지점 안내
             </h2>
-            <p className="text-[17px] text-[#6E6E73]">
+            <p className="text-[16px] text-[#6E6E73]">
               브루이 카페 전국 지점에서 픽업 주문이 가능합니다.
             </p>
           </div>
@@ -149,14 +148,13 @@ function MainPage() {
             {branches.map(b => (
               <div key={b.branch_id}
                 className="bg-[#F5F5F7] rounded-[20px] p-8 hover:shadow-[0_8px_40px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 transition-all duration-300 cursor-default">
-                <div className="w-10 h-10 rounded-2xl bg-[#E8E8ED] flex items-center justify-center text-lg mb-5">
-                  📍
-                </div>
-                <h3 className="text-[17px] font-semibold text-[#1D1D1F] mb-2">{b.name}</h3>
+                <h3 className="text-[16px] font-semibold text-[#1D1D1F] mb-1.5">{b.name}</h3>
                 <p className="text-[13px] text-[#6E6E73] leading-relaxed mb-4">{b.address}</p>
-                <p className="text-[13px] text-[#AEAEB2] mb-1">{b.phone}</p>
-                <p className="text-[13px] text-[#AEAEB2] mb-5">{b.open_time} – {b.close_time}</p>
-                <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-[12px] font-semibold rounded-full">
+                <div className="space-y-1 mb-5">
+                  <p className="text-[13px] text-[#AEAEB2]">{b.phone}</p>
+                  <p className="text-[13px] text-[#AEAEB2]">{b.open_time} – {b.close_time}</p>
+                </div>
+                <span className="inline-block px-3 py-1 bg-green-50 text-green-600 text-[12px] font-medium rounded-full">
                   영업중
                 </span>
               </div>
@@ -168,14 +166,14 @@ function MainPage() {
       {/* ────────────────────────────────────────
           메뉴 — 연회색 배경, 깔끔한 카드
       ──────────────────────────────────────── */}
-      <section id="menu" className="bg-[#F5F5F7] py-[96px]">
+      <section id="menu" className="bg-[#F5F5F7] py-20">
         <div className="max-w-[1200px] mx-auto px-6">
 
-          <div className="mb-14">
-            <h2 className="text-[48px] font-bold text-[#1D1D1F] tracking-tight leading-[1.08] mb-3">
+          <div className="mb-10">
+            <h2 className="text-[34px] font-bold text-[#1D1D1F] tracking-tight mb-2">
               메뉴
             </h2>
-            <p className="text-[17px] text-[#6E6E73]">
+            <p className="text-[16px] text-[#6E6E73]">
               브루이의 시그니처 메뉴를 만나보세요.
             </p>
           </div>
@@ -203,7 +201,7 @@ function MainPage() {
                 }`}>
 
                 {/* 이미지 */}
-                <div className="relative h-52 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   {getImageUrl(p.image_url) ? (
                     <img
                       src={getImageUrl(p.image_url)}
@@ -211,8 +209,8 @@ function MainPage() {
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#F5F5F7] to-[#E8E8ED] flex items-center justify-center">
-                      <span className="text-5xl opacity-30">☕</span>
+                    <div className="w-full h-full bg-[#F5F5F7] flex items-center justify-center">
+                      <span className="text-4xl opacity-20">☕</span>
                     </div>
                   )}
                   {p.is_sold_out === 1 && (
@@ -225,14 +223,11 @@ function MainPage() {
                 </div>
 
                 {/* 정보 */}
-                <div className="p-5">
-                  <p className="text-[11px] font-medium text-[#AEAEB2] uppercase tracking-wider mb-1.5">
-                    {p.category_name}
-                  </p>
-                  <h3 className="text-[15px] font-semibold text-[#1D1D1F] mb-3 leading-snug">
+                <div className="p-4">
+                  <h3 className="text-[14px] font-semibold text-[#1D1D1F] mb-1.5 leading-snug">
                     {p.name}
                   </h3>
-                  <p className="text-[19px] font-bold text-[#1D1D1F]">
+                  <p className="text-[13px] text-[#6E6E73]">
                     {p.price?.toLocaleString()}원
                   </p>
                 </div>
