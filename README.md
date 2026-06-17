@@ -115,7 +115,6 @@
 - 주문 완료 화면 (주문번호 / 금액 확인)
 
 ### ✅ Phase 16. 도메인 + HTTPS
-- 도메인: brewy.store (가비아, 연 2,200원)
 - DNS A 레코드 → EC2 IP 연결
 - Let's Encrypt 인증서 발급 (Certbot)
 - 자동 갱신 설정 완료
