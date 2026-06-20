@@ -1,24 +1,63 @@
 # ☕ BREWY (브루이 카페 픽업 주문)
 
-> 개발 컨설턴트를 위한 JAVA + Node.js 백엔드 Javascript + React 프론트엔드 풀스택 프로젝트
-> 카카오 소셜 로그인, 장바구니/주문, AWS EC2 구현한 카페 주문 서비스
+> 개발 컨설턴트 포트폴리오를 위한 Node.js 백엔드 + React 프론트엔드 풀스택 프로젝트
+> 카카오 소셜 로그인, 장바구니/주문, AWS EC2 실서비스 배포까지 구현한 카페 픽업 주문 서비스입니다.
+
+**🌐 실서비스 URL: https://brewy.store**
+
 ---
+
+## 📸 화면 미리보기
+
+### 👤 일반 유저 화면
+
+#### 🔐 로그인 (Apple ID 스타일 + 카카오 소셜 로그인)
+![로그인](./screenshots/user_login.png)
+
+#### 🏠 메인 화면 (히어로 + 지점 안내 + 메뉴 카드)
+![메인](./screenshots/user_main.png)
+
+#### 🛒 장바구니 + 주문 (바텀 시트)
+![장바구니](./screenshots/user_cart.png)
+
+#### 🤖 AI 메뉴 추천 챗봇
+![챗봇](./screenshots/user_chatbot.png)
+
+#### 👤 마이페이지 (스탬프 / 쿠폰 / 주문내역)
+![마이페이지](./screenshots/user_mypage_1.png)
+
+---
+
+### 👨‍💼 관리자 화면
+
+#### 🍵 메뉴 관리 (등록 / 수정 / 이미지 업로드 / 비활성화)
+![관리자 메뉴관리](./screenshots/admin_menu.png)
+
+#### 📋 주문 관리 (전체 주문 목록 + 상태 변경)
+![관리자 주문관리](./screenshots/admin_orders.png)
+
+#### 📊 매출 통계 (일별 / 월별 / 지점별 / 메뉴별)
+![관리자 통계](./screenshots/admin_stats_1.png)
+
+---
+
 ## 👨‍💻 프로젝트 개요
 
 - **프로젝트명**: BREWY (브루이 카페 픽업 주문)
 - **개발자**: 박용희
+- **실서비스**: https://brewy.store
 - **개발 목적**
-  - 개발 컨설턴트
-  - 풀스택(JAVA + Node.js + React) 실습
-  - 카카오, 도메인 연동 실전 경험
+  - 개발 컨설턴트 포트폴리오
+  - 풀스택(Node.js + React) + 클라우드 배포 실습
+  - 카카오 OAuth, HTTPS, 도메인 연동 실전 경험
 
 ---
 
 ## 🛠 기술 스택
 
 ### Backend
-- JAVA + Node.js v20 + Express
-- MySQL 8.4 + ORACLE
+- Node.js v20 + Express
+- MySQL 8.4
 - JWT 인증 + bcrypt 암호화
 - Kakao OAuth 2.0 (소셜 로그인)
 - dotenv, cors
@@ -44,6 +83,7 @@
 - Ubuntu 26.04 LTS
 - Nginx (정적 파일 서빙 + 리버스 프록시)
 - Let's Encrypt + Certbot (HTTPS 인증서)
+- 도메인: brewy.store (가비아)
 - GitHub (버전 관리 + 배포 경로)
 
 ---
@@ -93,31 +133,45 @@
 - 관리자 대시보드 React UI (3탭)
 - Recharts 차트 (막대 / 라인 / 파이 / 가로막대)
 
-### ✅ Phase 11~12. 보안 미들웨어
+### ✅ Phase 11~12. 이미지 업로드 + 보안 미들웨어
 - multer 이미지 업로드 (메뉴 썸네일)
 - Morgan 로깅 / Rate Limiting / PM2 설정
 
-### ✅ Phase 13. AWS EC2 배포
+### ✅ Phase 15. AWS EC2 배포
 - EC2 t3.micro + Ubuntu + Nginx + PM2 설정
 - React 프로덕션 빌드 + Nginx 정적 서빙
 - Nginx 리버스 프록시 (/api → Node.js 8080)
 
-### ✅ Phase 14. 카카오 소셜 로그인
+### ✅ Phase 16. Apple 스타일 UI 전면 리디자인
+- 로그인: 좌우 분할, Apple ID 스타일 폼
+- 네비: 44px 극미니멀, 텍스트 링크만
+- 히어로: 컬러 커피 이미지 + 96px 대형 텍스트
+- 카드: 테두리 제거, 소프트 그림자
+- Tailwind CSS v3 도입
+- AdminPage 모바일 반응형 수정 (overflow-x-auto)
+
+### ✅ Phase 17. 카카오 소셜 로그인
 - Kakao OAuth 2.0 (REST API 인가코드 방식)
 - 신규 사용자 자동 회원가입
 - 클라이언트 시크릿 보안 처리
 - DB: users 테이블 kakao_id 컬럼 추가
 
-### ✅ Phase 15. 장바구니 + 주문 기능
+### ✅ Phase 18. 장바구니 + 주문 기능
 - 메뉴 카드 [담기] 버튼
 - 하단 고정 장바구니 바
 - 바텀 시트: 수량 조절 / 지점 선택 / 픽업 시간 선택
 - 주문 완료 화면 (주문번호 / 금액 확인)
 
-### ✅ Phase 16. 도메인 + HTTPS
+### ✅ Phase 19. 도메인 + HTTPS
+- 도메인: brewy.store (가비아, 연 2,200원)
 - DNS A 레코드 → EC2 IP 연결
 - Let's Encrypt 인증서 발급 (Certbot)
 - 자동 갱신 설정 완료
+- **접속 URL: https://brewy.store**
+
+### 🔜 Phase 20. Jest 단위 테스트
+### 🔜 Phase 21. Docker 컨테이너화
+### 🔜 Phase 22. 토스페이먼츠 테스트 결제 연동
 
 ---
 
@@ -150,6 +204,13 @@
 | GET | /api/orders | 주문 목록 | ✅ |
 | GET | /api/orders/:id | 주문 상세 | ✅ |
 | PATCH | /api/orders/:id/cancel | 주문 취소 | ✅ |
+
+### 스탬프 / 쿠폰
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| GET | /api/stamps/count | 스탬프 개수 | ✅ |
+| GET | /api/coupons | 쿠폰 목록 | ✅ |
+| POST | /api/coupons/use | 쿠폰 사용 | ✅ |
 
 ### 관리자 전용 🔒
 | Method | Endpoint | 설명 |
@@ -272,10 +333,17 @@ cd frontend && npm start  # 프론트엔드 (포트 3000)
 - Morgan 로깅 / Rate Limiting / PM2 클러스터
 - React useState / useEffect / 컴포넌트 설계
 - Tailwind CSS 반응형 (모바일 / 태블릿 / PC)
+- Axios 인터셉터 / localStorage JWT 관리
+- Recharts (Bar / Line / Pie 차트)
+- AWS EC2 배포 / Nginx 리버스 프록시
+- Let's Encrypt HTTPS / Certbot 자동 갱신
+- DNS A 레코드 / 도메인 연결
+- PM2 환경변수 관리 (export + --update-env)
+- Python + MySQL 연동 / pandas 데이터 분석
 - OpenAI API 챗봇 연동
 
 ---
 
 ## ✨ 한 줄 소개
 
-**BREWY는 카카오 소셜 로그인 · 장바구니 주문 · AWS EC2 서버를 갖춘 카페주문 풀스택 실습 프로젝트입니다.**
+**BREWY는 카카오 소셜 로그인 · 장바구니 주문 · AWS EC2 실배포 · HTTPS 도메인까지 갖춘 카페 픽업 주문 풀스택 포트폴리오 프로젝트입니다.**
